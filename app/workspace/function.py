@@ -30,3 +30,20 @@ def add_responsibility():
 def remove_last_responsibility():
     if st.session_state.responsibilities:
         st.session_state.responsibilities.pop()
+
+
+# Function to add a new skill slider
+def add_skill():
+    new_skill_label = st.session_state.get('new_skill_label', '')
+    if new_skill_label:
+        st.session_state.skills_acquired.append({
+            'label': new_skill_label,
+            'value': 3  # Default value for the slider
+        })
+        # Clear the input field after adding the skill
+        st.session_state.new_skill_label = ''
+
+# Function to remove the last skill slider
+def remove_last_skill():
+    if st.session_state.skills_acquired:
+        st.session_state.skills_acquired.pop()

@@ -1,5 +1,5 @@
 import streamlit as st
-from function import add_field_personal, remove_field_by_label_personal, add_responsibility, remove_last_responsibility
+from function import add_field_personal, remove_field_by_label_personal, add_responsibility, remove_last_responsibility, add_skill, remove_last_skill
 
 # Initialize session state for dynamic fields in Personal Information
 if 'dynamic_fields_personal' not in st.session_state:
@@ -8,6 +8,10 @@ if 'dynamic_fields_personal' not in st.session_state:
 # Initialize session state for dynamic fields in Key Responsibilities
 if 'responsibilities' not in st.session_state:
     st.session_state.responsibilities = ["Led development of real-time trading algorithm, improving transaction speed by 40%"]
+
+# Initialize session state for dynamic fields in skill sliders
+if 'skills_acquired' not in st.session_state:
+    st.session_state.skills_acquired = []
 
 
 # Streamlit tabs
@@ -82,12 +86,20 @@ with tabs[2]:
             st.form_submit_button("Remove Last Responsibility", on_click=remove_last_responsibility)
 
         st.subheader("Skills Acquired")
-        java_skill = st.slider("Java", 1, 5, 5)
-        spring_boot_skill = st.slider("Spring Boot", 1, 5, 4)
-        kubernetes_skill = st.slider("Kubernetes", 1, 5, 3)
-        aws_skill = st.slider("AWS", 1, 5, 4)
-        microservices_skill = st.slider("Microservices", 1, 5, 4)
-        agile_methodologies_skill = st.slider("Agile Methodologies", 1, 5, 5)
+
+        # Display dynamic Skills Acquired sliders with adjustable labels
+        for i, skill in enumerate(st.session_state.skills_acquired):
+            skill['value'] = st.slider(skill['label'], 1, 5, skill['value'], key=f"skill_slider_{i}")
+
+        # Input for new skill label
+        st.text_input("Enter skill label:", key="new_skill_label")
+
+        cols = st.columns(2)
+        with cols[0]:
+            st.form_submit_button("Add Skill", on_click=add_skill)
+        with cols[1]:
+            st.form_submit_button("Remove Last Skill", on_click=remove_last_skill)
+
         
         submitted = st.form_submit_button("Save Experience Details")
         if submitted:
